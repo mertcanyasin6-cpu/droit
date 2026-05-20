@@ -147,6 +147,7 @@ function App() {
   const [stylePreset, setStylePreset] = useState('classic')
   const [exportProfile, setExportProfile] = useState('discord')
   const [activeLine, setActiveLine] = useState(0)
+  const [highlightColor, setHighlightColor] = useState('#ffd633')
   const [recentItems, setRecentItems] = useState(() => {
     try {
       const raw = localStorage.getItem('droit_chat_recent_v1')
@@ -220,6 +221,29 @@ function App() {
       return true
     })
     setChatText(joinLines(unique))
+  }
+
+  const applyColorToSelection = () => {
+    const el = textAreaRef.current
+    if (!el) return
+    const start = el.selectionStart
+    const end = el.selectionEnd
+    if (start === end) return
+    const openTag = `!{${highlightColor}}`
+    const closeTag = '!{#F0F0F0}'
+    const next =
+      chatText.slice(0, start) +
+      openTag +
+      chatText.slice(start, end) +
+      closeTag +
+      chatText.slice(end)
+    setChatText(next)
+    requestAnimationFrame(() => {
+      el.focus()
+      const nextStart = start + openTag.length
+      const nextEnd = nextStart + (end - start)
+      el.setSelectionRange(nextStart, nextEnd)
+    })
   }
 
   const applyStylePreset = (key) => {
@@ -336,6 +360,10 @@ function App() {
             <button className="btn btn-ghost" onClick={normalizeChatText}>Normalize</button>
             <button className="btn btn-ghost" onClick={removeDuplicateLines}>Çiftleri Temizle</button>
             <button className="btn btn-ghost" onClick={saveRecent}>Save Recent</button>
+          </div>
+          <div className="actions actions-muted">
+            <input type="color" value={highlightColor} onChange={(e) => setHighlightColor(e.target.value)} />
+            <button className="btn btn-ghost" onClick={applyColorToSelection}>Seçileni Renklendir</button>
           </div>
           <div className="actions actions-muted">
             <button className="btn btn-ghost" onClick={() => moveLine(-1)}>Line Up</button>
