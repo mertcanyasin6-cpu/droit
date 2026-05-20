@@ -38,6 +38,13 @@ const EXPORT_PROFILES = {
   ticket: { width: 760, height: 360 },
 }
 
+const QUICK_COLORS = [
+  { key: 'me', label: 'ME', value: '#C2A2DA' },
+  { key: 'white', label: 'Beyaz', value: '#F0F0F0' },
+  { key: 'gray', label: 'Gri', value: '#B9BECA' },
+  { key: 'yellow', label: 'Sarı', value: '#FFD633' },
+]
+
 const I18N = {
   tr: {
     title: 'droit',
@@ -362,10 +369,6 @@ function App() {
             <button className="btn btn-ghost" onClick={saveRecent}>Save Recent</button>
           </div>
           <div className="actions actions-muted">
-            <input type="color" value={highlightColor} onChange={(e) => setHighlightColor(e.target.value)} />
-            <button className="btn btn-ghost" onClick={applyColorToSelection}>Seçileni Renklendir</button>
-          </div>
-          <div className="actions actions-muted">
             <button className="btn btn-ghost" onClick={() => moveLine(-1)}>Line Up</button>
             <button className="btn btn-ghost" onClick={() => moveLine(1)}>Line Down</button>
             <button className="btn btn-ghost" onClick={duplicateLine}>Duplicate</button>
@@ -387,6 +390,24 @@ function App() {
 
         <div className="panel preview-wrap">
           <h2>Preview</h2>
+          <div className="color-tools">
+            <div className="quick-colors">
+              {QUICK_COLORS.map((c) => (
+                <button
+                  key={c.key}
+                  className={`btn btn-ghost quick-color ${highlightColor.toLowerCase() === c.value.toLowerCase() ? 'is-active' : ''}`}
+                  onClick={() => setHighlightColor(c.value)}
+                >
+                  <span className="quick-dot" style={{ background: c.value }} />
+                  {c.label}
+                </button>
+              ))}
+            </div>
+            <div className="actions">
+              <input type="color" value={highlightColor} onChange={(e) => setHighlightColor(e.target.value)} />
+              <button className="btn btn-primary" onClick={applyColorToSelection}>Seçileni Renklendir</button>
+            </div>
+          </div>
           <div className="samp-box" ref={chatRef} style={{ width: `${chatWidth}px`, minHeight: `${chatHeight}px`, fontSize: `${fontSize}px`, lineHeight, background: `rgba(0,0,0,${bgOpacity})` }}>
             {rows.map((r) => (
               <p key={r.id} className="samp-line" style={{ color: r.color }}>

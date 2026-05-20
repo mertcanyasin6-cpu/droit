@@ -173,6 +173,38 @@ button:active { transform: translateY(0); }
   box-shadow: var(--shadow);
 }
 
+.color-tools {
+  display: grid;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.quick-colors {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.quick-color {
+  min-width: 0;
+  padding: 7px 10px;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.quick-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 999px;
+  border: 1px solid rgba(0, 0, 0, 0.25);
+}
+
+.quick-color.is-active {
+  border-color: var(--accent);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--accent) 40%, transparent);
+}
+
 .samp-box {
   border: 1px solid rgba(255,255,255,0.24);
   border-radius: 12px;
